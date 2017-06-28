@@ -78,6 +78,18 @@ def testPoolUpgradeCancelled(poolUpgradeCancelled, poolNodesStarted):
                    nodes, retryWait=1, timeout=timeout))
 
 
+def testSendNymSucceedsForUuidIdentifierAndOmittedVerkey(be, do, validUpgrade, trusteeCli):
+
+    parameters = {
+        'dest': createUuidIdentifier(),
+        'role': Roles.TRUST_ANCHOR.name
+    }
+
+    be(trusteeCli)
+    do('send NYM dest={dest} role={role}',
+       mapper=parameters, expect=NYM_ADDED, within=2)
+
+
 def send_force_false_upgrade_cmd(do, expect, upgrade_data):
     do('send POOL_UPGRADE name={name} version={version} sha256={sha256} '
        'action={action} schedule={schedule} timeout={timeout} force=False',
