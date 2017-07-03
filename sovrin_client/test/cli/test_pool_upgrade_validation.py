@@ -3,7 +3,7 @@ import pytest
 from sovrin_node.test.upgrade.conftest import validUpgrade
 from sovrin_client.test.cli.constants import INVALID_SYNTAX
 from plenum.common.util import randomString
-from sovrin_common.constants import JUSTIFICATION
+from sovrin_common.constants import JUSTIFICATION, JUSTIFICATION_MAX_SIZE
 
 
 def testPoolUpgradeHasInvalidSyntaxIfJustificationIsEmpty(be, do, validUpgrade, trusteeCli):
@@ -16,7 +16,7 @@ def testPoolUpgradeHasInvalidSyntaxIfJustificationIsEmpty(be, do, validUpgrade, 
 
 
 def testPoolUpgradeHasInvalidSyntaxIfJustificationIsVeryLong(be, do, validUpgrade, trusteeCli):
-    validUpgrade[JUSTIFICATION] = randomString(1001)
+    validUpgrade[JUSTIFICATION] = randomString(JUSTIFICATION_MAX_SIZE + 1)
 
     be(trusteeCli)
     do('send POOL_UPGRADE name={name} version={version} sha256={sha256} '
